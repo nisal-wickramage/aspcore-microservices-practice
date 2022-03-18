@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  evoting.api:
+    image: evotingapi
+    build:
+      context: .
+      dockerfile: eVoting.Api/Dockerfile
+    ports:
+        - "5051:443"
+        - "5050:80"
