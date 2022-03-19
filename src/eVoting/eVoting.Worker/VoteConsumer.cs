@@ -9,9 +9,22 @@ namespace eVoting.Worker
     {
         private readonly IVoteRepository _voteRepository;
 
+        public VoteConsumer(IVoteRepository voteRepository)
+        {
+            _voteRepository = voteRepository;
+        }
+
         public Task Consume(ConsumeContext<Vote> context)
         {
-            Console.WriteLine(context.Message.Option.ToString(), context.Message.VotedDateTime);
+            Console.WriteLine($"{context.Message.Option}, {context.Message.VotedDateTime}");
+            try
+            {
+                _voteRepository.Save(context.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message, ex.StackTrace);
+            }
             return Task.CompletedTask;
         }
     }

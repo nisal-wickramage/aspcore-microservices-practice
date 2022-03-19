@@ -30,7 +30,7 @@ namespace eVoting.Api.Controllers
             var vote = new Vote
             {
                 Option = option,
-                VotedDateTime = DateTime.UtcNow
+                VotedDateTime = DateTime.UtcNow.ToString()
             };
             await _votePublisher.Publish(vote);
             _logger.LogInformation("Finished recording the vote");

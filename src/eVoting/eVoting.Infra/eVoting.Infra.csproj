@@ -9,6 +9,7 @@
     <None Remove="PostgresDb\" />
     <None Remove="MassTransit.RabbitMQ" />
     <None Remove="MassTransit" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RabbitMq\" />
@@ -19,5 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
   </ItemGroup>
 </Project>

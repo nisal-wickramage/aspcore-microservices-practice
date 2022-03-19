@@ -1,10 +1,50 @@
 version: '3.4'
 
 services:
-  evoting.api:
-    image: evotingapi
-    build:
-      context: .
-      dockerfile: eVoting.Api/Dockerfile
-    ports:
-        - "5050:80"
+    evoting.api:
+        image: evotingapi
+        build:
+            context: .
+            dockerfile: eVoting.Api/Dockerfile
+        ports:
+            - "5001:80"
+        depends_on:
+            - "rabbitmq"
+            - "db"
+        environment:
+            - MT_TRANSPORT=RMQ
+            - MT_RMQ__HOST=rabbitmq
+
+    evoting.worker:
+        image: evotingworker
+        build:
+            context: .
+            dockerfile: eVoting.Worker/Dockerfile
+        depends_on:
+            - "rabbitmq"
+            - "db"
+        environment:
+            - MT_TRANSPORT=RMQ
+            - MT_RMQ__HOST=rabbitmq
+            - DB_CONNECTION=Host=db;Database=evoting2;Username=evoting;Password=evotingadmin
+
+    rabbitmq:
+        image: masstransit/rabbitmq
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+
+    db:
+        image: postgres
+        restart: always
+        environment:
+            - POSTGRES_USER=evoting
+            - POSTGRES_PASSWORD=evotingadmin
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - "8080:8080"
+        depends_on:
+            - "db"

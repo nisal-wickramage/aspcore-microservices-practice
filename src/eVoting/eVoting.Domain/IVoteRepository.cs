@@ -1,9 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
+
 namespace eVoting.Domain
 {
     public interface IVoteRepository
     {
         void Save(Vote vote);
-        void GetResult();
+        IList<KeyValuePair<VoteOptions, int>> GetResult();
     }
 }

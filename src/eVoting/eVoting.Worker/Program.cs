@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MassTransit;
+using eVoting.Infra.PostgresDb;
+using System;
+using Microsoft.EntityFrameworkCore;
+using eVoting.Domain;
 
 namespace eVoting.Worker
 {
@@ -30,6 +34,12 @@ namespace eVoting.Worker
                         {
                             options.WaitUntilStarted = true;
                         });
+                    Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION"));
+
+                    /*services.AddDbContext<EVotingDbContext>(options =>
+                        options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION")));*/
+
+                    services.AddTransient<IVoteRepository, VoteRepository>();
                 });
     }
 }
