@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "eVoting.Worker": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

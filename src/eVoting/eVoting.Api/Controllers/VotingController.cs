@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using eVoting.Application;
 using eVoting.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,18 +12,19 @@ namespace eVoting.Api.Controllers
     public class VotingController : ControllerBase
     {
         private readonly ILogger<VotingController> _logger;
-        private readonly IVoteRepository _voteRepository;
+        private readonly IVotePublisher _votePublisher;
 
         public VotingController(
             ILogger<VotingController> logger,
-            IVoteRepository voteRepository)
+            IVotePublisher votePublisher)
         {
             _logger = logger;
-            _voteRepository = voteRepository;
+            _votePublisher = votePublisher;
         }
 
         [HttpPost]
-        public IActionResult Record(VoteOptions option)
+        [Route("{option}")]
+        public async Task<IActionResult> Record(VoteOptions option)
         {
             _logger.LogInformation("Starting to record the vote");
             var vote = new Vote
@@ -29,7 +32,7 @@ namespace eVoting.Api.Controllers
                 Option = option,
                 VotedDateTime = DateTime.UtcNow
             };
-            _voteRepository.Save(vote);
+            await _votePublisher.Publish(vote);
             _logger.LogInformation("Finished recording the vote");
             return Ok();
         }

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="RabbitMq\" />
+    <None Remove="PostgresDb\" />
+    <None Remove="MassTransit.RabbitMQ" />
+    <None Remove="MassTransit" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RabbitMq\" />
+    <Folder Include="PostgresDb\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\eVoting.Application\eVoting.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.0.0" />
+  </ItemGroup>
+</Project>

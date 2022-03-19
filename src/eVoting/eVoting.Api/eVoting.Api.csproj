@@ -10,5 +10,23 @@
     <ProjectReference Include="..\eVoting.Domain\eVoting.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\eVoting.Application\eVoting.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\eVoting.Infra\eVoting.Infra.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="MassTransit" />
+    <None Remove="MassTransit.RabbitMQ" />
+    <None Remove="GreenPipes, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.0.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GreenPipes, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b" />
   </ItemGroup>
 </Project>

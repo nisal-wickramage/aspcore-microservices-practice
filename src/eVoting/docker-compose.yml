@@ -7,5 +7,4 @@ services:
       context: .
       dockerfile: eVoting.Api/Dockerfile
     ports:
-        - "5051:443"
         - "5050:80"
