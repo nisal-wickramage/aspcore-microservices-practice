@@ -2,6 +2,7 @@
 using eVoting.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace eVoting.Result.Api.Controllers
 {
@@ -21,9 +22,9 @@ namespace eVoting.Result.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<KeyValuePair<VoteOptions, int>> Get()
+        public IEnumerable<KeyValuePair<string, int>> Get()
         {
-            return _voteRepository.GetResult();
+            return _voteRepository.GetResult().Select(v => new KeyValuePair<string, int>(v.Key.ToString(), v.Value));
         }
     }
 }

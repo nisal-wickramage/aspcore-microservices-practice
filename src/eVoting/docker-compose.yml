@@ -48,3 +48,16 @@ services:
             - "8080:8080"
         depends_on:
             - "db"
+
+    evoting.result.api:
+        image: evotingresultapi
+        build:
+            context: .
+            dockerfile: eVoting.Result.Api/Dockerfile
+        ports:
+            - "5002:80"
+        depends_on:
+            - "db"
+        environment:
+            - DB_CONNECTION=Host=db;Database=evoting2;Username=evoting;Password=evotingadmin
+

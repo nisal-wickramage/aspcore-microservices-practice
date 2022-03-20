@@ -1,4 +1,5 @@
-﻿using eVoting.Domain;
+﻿using System;
+using eVoting.Domain;
 using eVoting.Infra.PostgresDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +25,7 @@ namespace eVoting.Result.Api
 
             services.AddControllers();
             services.AddDbContext<EVotingDbContext>(options =>
-                         options.UseNpgsql("Host=db;Database=evoting2;Username=evoting;Password=evotingadmin"));
+                         options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION")));
 
             services.AddTransient<IVoteRepository, VoteRepository>();
         }
