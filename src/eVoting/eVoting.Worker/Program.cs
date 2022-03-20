@@ -34,12 +34,12 @@ namespace eVoting.Worker
                         {
                             options.WaitUntilStarted = true;
                         });
-                    Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION"));
-
-                    /*services.AddDbContext<EVotingDbContext>(options =>
-                        options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION")));*/
+                    
+                    services.AddDbContext<EVotingDbContext>(options =>
+                        options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION")));
 
                     services.AddTransient<IVoteRepository, VoteRepository>();
+                    
                 });
     }
 }

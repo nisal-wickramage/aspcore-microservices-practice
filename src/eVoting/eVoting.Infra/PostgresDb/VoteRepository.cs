@@ -14,6 +14,7 @@ namespace eVoting.Infra.PostgresDb
 
         public IList<KeyValuePair<VoteOptions, int>> GetResult()
         {
+            _dbContext.Database.EnsureCreated();
             var result = _dbContext.Votes
                 .GroupBy(v => v.Option)
                 .Select(group => new KeyValuePair<VoteOptions, int>((VoteOptions)group.Key, group.Count()))
