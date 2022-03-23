@@ -14,6 +14,12 @@ services:
         environment:
             - MT_TRANSPORT=RMQ
             - MT_RMQ__HOST=rabbitmq
+        logging:
+            driver: gelf
+            options:
+                gelf-address: "udp://localhost:12201"
+                tag: "evoting.api"
+        restart: always
 
     evoting.worker:
         image: evotingworker
@@ -27,6 +33,30 @@ services:
             - MT_TRANSPORT=RMQ
             - MT_RMQ__HOST=rabbitmq
             - DB_CONNECTION=Host=db;Database=evoting2;Username=evoting;Password=evotingadmin
+        logging:
+            driver: gelf
+            options:
+                gelf-address: "udp://localhost:12201"
+                tag: "evoting.worker"
+        restart: always
+
+    evoting.result.api:
+        image: evotingresultapi
+        build:
+            context: .
+            dockerfile: eVoting.Result.Api/Dockerfile
+        ports:
+            - "5002:80"
+        depends_on:
+            - "db"
+        environment:
+            - DB_CONNECTION=Host=db;Database=evoting2;Username=evoting;Password=evotingadmin
+        logging:
+            driver: gelf
+            options:
+                gelf-address: "udp://localhost:12201"
+                tag: "evoting.result.api"
+        restart: always
 
     rabbitmq:
         image: masstransit/rabbitmq
@@ -49,15 +79,41 @@ services:
         depends_on:
             - "db"
 
-    evoting.result.api:
-        image: evotingresultapi
-        build:
-            context: .
-            dockerfile: eVoting.Result.Api/Dockerfile
-        ports:
-            - "5002:80"
-        depends_on:
-            - "db"
+    redis-cache:
+        image: redis:6.2
+    
+    elasticsearch:
+        image: elasticsearch:7.11.1
         environment:
-            - DB_CONNECTION=Host=db;Database=evoting2;Username=evoting;Password=evotingadmin
+            - discovery.type=single-node
+        volumes:
+            - ./elk/elasticsearch_data/:/usr/share/elasticsearch/data
+        mem_limit: "1g"
+
+    logstash-agent:
+        image: logstash:7.11.1
+        volumes:
+            - ./elk/logstash-agent:/etc/logstash
+        command: logstash -f /etc/logstash/logstash.conf
+        depends_on:
+            - elasticsearch
+        ports:
+            - 12201:12201/udp
+
+    logstash-central:
+        image: logstash:7.11.1
+        volumes:
+            - ./elk/logstash-central:/etc/logstash
+        command: logstash -f /etc/logstash/logstash.conf
+        depends_on:
+            - elasticsearch
+
+    kibana:
+        image: kibana:7.11.1
+        ports:
+            - 5601:5601
+        environment:
+            - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        depends_on:
+            - elasticsearch
 

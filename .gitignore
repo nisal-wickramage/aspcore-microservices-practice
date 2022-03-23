@@ -351,3 +351,5 @@ MigrationBackup/
 .DS_Store
 src/.DS_Store
 src/eVoting/.DS_Store
+
+**/src/eVoting/elk/elasticsearch_data/
